@@ -1,0 +1,27 @@
+# Dockerfile per Client JavaFX
+FROM openjdk:17-slim
+
+WORKDIR /app
+
+# Installa dipendenze per GUI (per X11 forwarding se necessario)
+RUN apt-get update && apt-get install -y \
+    libxrender1 \
+    libxtst6 \
+    libxi6 \
+    libgl1-mesa-glx \
+    libgtk-3-0 \
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copia tutto il contenuto del client incluse le librerie JavaFX
+COPY . .
+
+# Compila i file Java usando le librerie JavaFX del progetto
+RUN javac --module-path javafx-sdk-17.0.17/lib \
+    --add-modules javafx.controls \
+    *.java
+
+# Comando di default - avvia il client JavaFX
+CMD ["java", "--module-path", "javafx-sdk-17.0.17/lib", \
+     "--add-modules", "javafx.controls", \
+     "TrisClientFX"]

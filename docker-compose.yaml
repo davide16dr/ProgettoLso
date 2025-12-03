@@ -1,0 +1,38 @@
+services:
+  tris_server:
+    build:
+      context: ./tris_server
+      dockerfile: Dockerfile
+    ports:
+      - "12345:12345"
+    networks:
+      - tris_network
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/12345' || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: on-failure
+
+  # Client JavaFX (richiede display grafico - solo per development)
+  tris_client:
+    build:
+      context: ./tris_client
+      dockerfile: Dockerfile
+    depends_on:
+      tris_server:
+        condition: service_healthy
+    environment:
+      - SERVER_HOST=tris_server
+      - SERVER_PORT=12345
+    networks:
+      - tris_network
+    stdin_open: true
+    tty: true
+    profiles:
+      - gui
+
+networks:
+  tris_network:
+    driver: bridge
