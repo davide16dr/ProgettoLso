@@ -6,6 +6,7 @@
 
 set -e
 
+# Colori per output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
@@ -18,7 +19,8 @@ echo -e "${BLUE}╚════════════════════�
 echo ""
 
 # Directory del progetto
-PROJECT_DIR="/Users/davideranavolo/Desktop/ProgettoLso"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_DIR="$SCRIPT_DIR"
 CLIENT_DIR="$PROJECT_DIR/tris_client"
 
 # Parametri di connessione
@@ -44,13 +46,14 @@ if [ ! -d "$CLIENT_DIR/javafx-sdk-17.0.17" ]; then
     exit 1
 fi
 
-# Compilazione client
-echo -e "${YELLOW} Compilazione client JavaFX...${NC}"
+# Compilazione client (se necessario)
+echo -e "${YELLOW}🔨 Compilazione client JavaFX...${NC}"
 cd "$CLIENT_DIR"
 
 javac --module-path javafx-sdk-17.0.17/lib \
       --add-modules javafx.controls \
-      *.java 2>/dev/null
+      -d src \
+      src/*.java 2>/dev/null
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN} Compilazione completata${NC}"
@@ -72,7 +75,8 @@ start_client() {
     sleep $DELAY
     
     # Avvia client in background con output rediretto
-    java --module-path javafx-sdk-17.0.17/lib \
+    java -cp src \
+         --module-path javafx-sdk-17.0.17/lib \
          --add-modules javafx.controls \
          TrisClientFX "$SERVER_HOST" "$SERVER_PORT" \
          > /dev/null 2>&1 &
@@ -87,7 +91,7 @@ start_client() {
 # Pulisci file PID precedente
 rm -f /tmp/tris_clients_pids.txt
 
-echo -e "${YELLOW} Avvio dei client...${NC}"
+echo -e "${YELLOW}🚀 Avvio dei client...${NC}"
 echo ""
 
 # Avvia 2 client con un piccolo delay tra loro
@@ -100,9 +104,10 @@ echo -e "${GREEN}║      Due client avviati con successo!      ║${NC}"
 echo -e "${GREEN}╚════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${BLUE} Per fermare i client:${NC}"
-echo -e "   bash stop-clients.sh"
+echo -e "   ./stop-clients.sh"
 echo ""
 
+# Attendi qualche secondo per dare tempo ai client di avviarsi
 sleep 2
 
 # Verifica che i processi siano ancora attivi
@@ -121,8 +126,3 @@ if [ $ACTIVE_COUNT -lt 2 ]; then
     echo -e "${YELLOW}   Attenzione: Non tutti i client sono attivi!${NC}"
     echo -e "${YELLOW}   Verifica che le finestre JavaFX si siano aperte correttamente.${NC}"
 fi
-
-echo ""
-echo -e "${BLUE} Log del server:${NC}"
-echo -e "   docker-compose logs -f tris_server"
-echo ""
