@@ -3,7 +3,7 @@
 # Script per eseguire il client JavaFX
 
 echo "╔════════════════════════════════════════╗"
-echo "║   Avvio Client JavaFX Tris             ║"
+echo "║       Avvio Client JavaFX Tris         ║"
 echo "╚════════════════════════════════════════╝"
 echo ""
 

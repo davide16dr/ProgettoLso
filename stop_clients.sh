@@ -24,7 +24,7 @@ if [ ! -f "$PID_FILE" ]; then
     exit 0
 fi
 
-echo -e "${YELLOW}🔍 Ricerca client attivi...${NC}"
+echo -e "${YELLOW} Ricerca client attivi...${NC}"
 
 STOPPED_COUNT=0
 NOT_FOUND_COUNT=0

@@ -38,7 +38,7 @@ gcc --version
 #### DOCKER
 ```bash
 # Dalla directory principale
-cd /Users/davideranavolo/Desktop/ProgettoLso
+cd /<path>/ProgettoLso
 
 # Build e avvio server in background
 docker-compose up -d tris_server
@@ -63,10 +63,10 @@ gcc -o tris_server server.c client_h.c protocol.c \
 # Stop: Ctrl+C
 ```
 
-### 2️⃣ Avvia Client (Locale)
+###  Avvia Client (Locale)
 #### Opzione A: Comando Manuale
 ```bash
-cd tris_client/src
+cd tris_client
 
 # Compila
 ./build.sh
@@ -78,7 +78,7 @@ cd tris_client/src
 #### Opzione B: Script Automatico (2 client)
 ```bash
 # Dalla directory principale
-cd /Users/davideranavolo/Desktop/ProgettoLso
+cd /<path>/ProgettoLso
 
 # Avvia server + 2 client
 ./start-clients.sh
@@ -97,7 +97,7 @@ Ctrl+C
 ./stop-clients.sh
 
 # Ferma server Docker
-cd /Users/davideranavolo/Desktop/ProgettoLso
+cd /<path>/ProgettoLso
 docker-compose down
 
 # Ferma server Docker (nel terminale dove è in esecuzione)
