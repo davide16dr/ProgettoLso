@@ -14,13 +14,13 @@ JAVAFX_LIB="$JAVAFX_SDK_PATH/lib"
 
 # Controlla se è compilato
 if [ ! -f "TrisClientFX.class" ]; then
-    echo "❌ Applicazione non compilata. Esegui ./build.sh prima"
+    echo "Applicazione non compilata. Esegui ./build.sh prima"
     exit 1
 fi
 
 # Controlla se JavaFX SDK esiste
 if [ ! -d "$JAVAFX_SDK_PATH" ]; then
-    echo "⚠️  JavaFX SDK non trovato, provo con installazione di sistema..."
+    echo "  JavaFX SDK non trovato, provo con installazione di sistema..."
     java --add-modules javafx.controls TrisClientFX
 else
     # Esegui con JavaFX SDK locale

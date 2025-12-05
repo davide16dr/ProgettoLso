@@ -3,6 +3,7 @@ services:
     build:
       context: ./tris_server
       dockerfile: Dockerfile
+    container_name: tris_server
     ports:
       - "12345:12345"
     networks:
@@ -14,24 +15,6 @@ services:
       retries: 3
       start_period: 5s
     restart: on-failure
-
-  # Client JavaFX (richiede display grafico - solo per development)
-  tris_client:
-    build:
-      context: ./tris_client
-      dockerfile: Dockerfile
-    depends_on:
-      tris_server:
-        condition: service_healthy
-    environment:
-      - SERVER_HOST=tris_server
-      - SERVER_PORT=12345
-    networks:
-      - tris_network
-    stdin_open: true
-    tty: true
-    profiles:
-      - gui
 
 networks:
   tris_network:
