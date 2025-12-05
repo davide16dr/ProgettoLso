@@ -21,7 +21,7 @@ typedef enum {
 } ClientState;
 
 typedef enum {
-    GAME_STATE_EMPTY,
+    GAME_STATE_CREATED,
     GAME_STATE_WAITING,
     GAME_STATE_IN_PROGRESS,
     GAME_STATE_FINISHED

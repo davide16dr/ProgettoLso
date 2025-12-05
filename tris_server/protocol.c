@@ -71,7 +71,7 @@ void broadcast_games_list() {
     
     pthread_mutex_lock(&game_list_mutex);
     for (int i = 0; i < MAX_GAMES; ++i) {
-        if (games[i].state == GAME_STATE_EMPTY || games[i].state == GAME_STATE_FINISHED) {
+        if (games[i].state == GAME_STATE_CREATED || games[i].state == GAME_STATE_FINISHED) {
             continue;
         }
         
@@ -219,7 +219,7 @@ void process_list_command(int client_idx) {
 
     pthread_mutex_lock(&game_list_mutex);
     for (int i = 0; i < MAX_GAMES; ++i) {
-        if (games[i].state == GAME_STATE_EMPTY || games[i].state == GAME_STATE_FINISHED) {
+        if (games[i].state == GAME_STATE_CREATED || games[i].state == GAME_STATE_FINISHED) {
             continue;
         }
         
@@ -293,7 +293,7 @@ void process_create_command(int client_idx) {
     client_fd = clients[client_idx].fd;
     
     for (int i = 0; i < MAX_GAMES; ++i) {
-        if (games[i].state == GAME_STATE_EMPTY) {
+        if (games[i].state == GAME_STATE_CREATED) {
             game_idx = i;
             break;
         }

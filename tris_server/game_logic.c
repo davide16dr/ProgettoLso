@@ -98,7 +98,7 @@ int find_game_index_unsafe(int game_id)
         return -1;
     for (int i = 0; i < MAX_GAMES; ++i)
     {
-        if (games[i].state != GAME_STATE_EMPTY && games[i].id == game_id)
+        if (games[i].state != GAME_STATE_CREATED && games[i].id == game_id)
         {
             return i;
         }
@@ -144,7 +144,7 @@ void reset_game_slot_to_empty_unsafe(int game_idx)
     memset(&games[game_idx], 0, sizeof(Game));
 
     games[game_idx].id = 0;
-    games[game_idx].state = GAME_STATE_EMPTY;
+    games[game_idx].state = GAME_STATE_CREATED;
     games[game_idx].player1_fd = -1;
     games[game_idx].player2_fd = -1;
     games[game_idx].current_turn_fd = -1;
@@ -164,7 +164,7 @@ bool handle_player_leaving_game(int game_idx, int leaving_client_fd, const char 
     Game *game = &games[game_idx];
     GameState state_at_entry = game->state;
 
-    if (state_at_entry == GAME_STATE_EMPTY)
+    if (state_at_entry == GAME_STATE_CREATED)
     {
         LOG("handle_player_leaving_game chiamato per uno slot già EMPTY (idx %d). Ignoro.\n", game_idx);
         return false;
@@ -400,7 +400,7 @@ void broadcast_game_state(int game_idx)
 
     Game *game = &games[game_idx];
 
-    if (game->state == GAME_STATE_EMPTY)
+    if (game->state == GAME_STATE_CREATED)
     {
         LOG("Attenzione: Tentativo di broadcast_game_state per lo slot EMPTY indice %d\n", game_idx);
         return;
